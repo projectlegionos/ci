@@ -18,15 +18,16 @@ task:
     - git lfs install
     - mkdir evox
     - cd evox
-    - repo init -u https://github.com/Evolution-X/manifest -b vic --git-lfs
+    - repo init  -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest -b vic --git-lfs
     - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j8
     - rm -rf .repo/project-objects
     - rm -rf .repo/projects
     - rm -rf .repo/manifests.git
-    - git clone https://github.com/legionos-devices/android_device_realme_rmx3371.git device/realme/rmx3371
-    - git clone https://github.com/legionos-devices/android_vendor_realme_rmx3371.git vendor/realme/rmx3371
-    - git clone https://github.com/legionos-devices/android_kernel_realme_sm8250.git kernel/realme/sm8250
-
+    - git clone -b 6.0 https://github.com/legionos-devices/android_device_realme_rmx3371.git device/realme/rmx3371
+    - git clone -b lineage-22.2 https://github.com/legionos-devices/android_vendor_realme_rmx3371.git vendor/realme/rmx3371
+    - git clone -b fifteen https://github.com/legionos-devices/android_kernel_realme_sm8250.git kernel/realme/sm8250
+    - git clone -b 6.0 https://github.com/legionos-devices/hardware_oplus.git hardware/oplus
+    
   build_script:
     - cd evox
     - source build/envsetup.sh
