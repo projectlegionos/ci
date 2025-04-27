@@ -29,10 +29,10 @@ task:
     - git clone -b 6.0 https://github.com/legionos-devices/hardware_oplus.git hardware/oplus
     
   build_script:
-    - cd evox
+    - cd ci/evox
     - source build/envsetup.sh
-    - lunch evolution_rmx3371-bp1a-userdebug
-    - mka bacon -j$(nproc)
+    - lunch evolution_rmx3371-bp1a-user
+    - mka evolution -j$(nproc)
 
   artifacts:
     files:
