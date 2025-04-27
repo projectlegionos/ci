@@ -36,5 +36,6 @@ task:
     - mka bacon -j$(nproc)
 
   artifacts:
-    - evox/out/target/product/rmx3371/*.zip
-    - evox/out/target/product/rmx3371/*.img
+    files:
+      - evox/out/target/product/rmx3371/*.zip
+      - evox/out/target/product/rmx3371/*.img
