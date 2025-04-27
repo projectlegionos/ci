@@ -1,0 +1,35 @@
+task:
+  name: Build Evolution X for RMX3371
+  container:
+    image: ubuntu:20.04
+
+  environment:
+    CCACHE_DIR: /tmp/ccache
+    USE_CCACHE: 1
+
+  install_script:
+    - apt update
+    - DEBIAN_FRONTEND=noninteractive apt install -y bc bison build-essential ccache curl flex g++-multilib gcc-multilib git gnupg gperf imagemagick lib32ncurses5-dev lib32readline-dev lib32z1-dev liblz4-tool libncurses5 libncurses5-dev libsdl1.2-dev libssl-dev libxml2 libxml2-utils lzop pngcrush rsync schedtool squashfs-tools xsltproc zip zlib1g-dev openjdk-8-jdk git-lfs
+
+  clone_script:
+    - git lfs install
+    - mkdir evox
+    - cd evox
+    - repo init -u https://github.com/Evolution-X/manifest -b vic --git-lfs
+    - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j8
+    - rm -rf .repo/project-objects
+    - rm -rf .repo/projects
+    - rm -rf .repo/manifests.git
+    - git clone https://github.com/legionos-devices/android_device_realme_rmx3371.git device/realme/rmx3371
+    - git clone https://github.com/legionos-devices/android_vendor_realme_rmx3371.git vendor/realme/rmx3371
+    - git clone https://github.com/legionos-devices/android_kernel_realme_sm8250.git kernel/realme/sm8250
+
+  build_script:
+    - cd evox
+    - source build/envsetup.sh
+    - lunch evolution_rmx3371-bp1a-userdebug
+    - mka bacon -j$(nproc)
+
+  artifacts:
+    - evox/out/target/product/rmx3371/*.zip
+    - evox/out/target/product/rmx3371/*.img
