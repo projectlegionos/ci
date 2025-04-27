@@ -14,6 +14,10 @@ task:
   clone_script:
     - git clone https://github.com/projectlegionos/ci && cd ci
     - git lfs install
+    - curl https://storage.googleapis.com/git-repo-downloads/repo > repo
+    - chmod a+x repo
+    - sudo install repo /usr/local/bin
+    - rm repo
     - mkdir evox
     - cd evox
     - repo init -u https://github.com/Evolution-X/manifest -b vic --git-lfs
