@@ -1,7 +1,13 @@
+env:
+    CIRRUS_CLONE_DEPTH: 1
+    BUILD_HOSTNAME: "cirrus-ci"
+    
 task:
   name: Build Evolution X for RMX3371
   container:
     image: ubuntu:20.04
+    cpu: 8
+    memory: 32G
 
   environment:
     CCACHE_DIR: /tmp/ccache
@@ -13,13 +19,12 @@ task:
     - curl https://storage.googleapis.com/git-repo-downloads/repo > /usr/local/bin/repo
     - chmod a+x /usr/local/bin/repo
     
-  clone_script:
-    - git clone https://github.com/projectlegionos/ci && cd ci
-    - git lfs install
+  all_build_script:
     - mkdir evox
     - cd evox
-    - repo init  -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest -b vic --git-lfs
-    - repo sync -c --no-clone-bundle --no-tags --optimized-fetch --prune -j8
+    # Initialize repo and sync, skip if cached
+    - repo init -q --no-repo-verify --depth=1 -u https://github.com/Evolution-X/manifest -b vic --git-lfs
+    - repo sync -c --no-clone-bundle --no-tags --force-sync --optimized-fetch --prune -j8
     - rm -rf .repo/project-objects
     - rm -rf .repo/projects
     - rm -rf .repo/manifests.git
@@ -27,11 +32,11 @@ task:
     - git clone -b lineage-22.2 https://github.com/legionos-devices/android_vendor_realme_rmx3371.git vendor/realme/rmx3371
     - git clone -b fifteen https://github.com/legionos-devices/android_kernel_realme_sm8250.git kernel/realme/sm8250
     - git clone -b 6.0 https://github.com/legionos-devices/hardware_oplus.git hardware/oplus
-    
-  build_script:
-    - cd ci/evox
+    - pwd
+    - ls build/make/core/envsetup.mk
+    - ls
     - source build/envsetup.sh
-    - lunch evolution_rmx3371-bp1a-user
+    - lunch lineage_rmx3371-bp1a-user
     - mka evolution -j$(nproc)
 
   artifacts:
